@@ -1,0 +1,61 @@
+---
+- hosts: all
+  # vars_files:
+  #  - vars.yml
+  sudo: yes
+  vars:
+      timezone: Europe/London
+      locale: en_GB.UTF-8
+      server_type: desktop
+      doc_root: /var/www/html
+      mysql:
+        root_password: rootpass
+        database: dbname
+        user: dbuser
+        password: dbpass
+      php_ppa: php5-5.6
+      ldap:
+        server: 192.168.21.250
+        dc:  dc=neontribe,dc=org
+      sys_packages:
+        - vim
+        - git
+        - htop
+        - mc
+        - ccze
+        - realpath
+      php_packages:
+        - php5-cli
+        - php5-intl
+        - php5-mcrypt
+        - php5-curl
+        - php-pear
+        - php5-imagick
+        - php5-common
+        - php5-gd
+        - php5-memcached
+        - php5-mysql
+        - php5-readline
+        - php5-xdebug
+        - php5-xmlrpc
+        - libapache2-mod-php5
+      timezone: Europe/London
+      ws_vhost_path: /etc/apache2/sites-available 
+      ws_vhost_file: 000-default.conf 
+      ws_template: vhost.conf.tpl
+  vars_prompt:
+      - name: ldap_pass
+        prompt: "LDAP admin bind password"
+        private: true
+        when: ldap.pass is not defined
+  roles:
+      - init
+      - bashrc
+      - ntpd
+      - firewall
+      - ssh
+      - shelltools
+      - ldapclient
+      - mysql
+      - apache
+      - php5
