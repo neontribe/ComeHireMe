@@ -15,20 +15,31 @@
     target: /var/www/dump.sql
 
 - copy: src=001-chm.conf dest=/etc/apache2/sites-available/001-chm.conf
+  notify: restart apache
 
 - file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
 
 - file: src=/etc/apache2/sites-available/001-chm.conf dest=/etc/apache2/sites-enabled/001-chm.conf state=link
-  notify: restart apache
 
 - file: path='/var/www/comeandhireme/application/cache' state=directory recurse=yes mode=777
 - file: path='/var/www/comeandhireme/application/logs' state=directory recurse=yes mode=777
 
+# - file: path='/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli' state=directory mode=775
 - copy: src=database.php dest=/var/www/comeandhireme/modules/database/config/database.php
-- copy: src=mysqli.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli.php
-- copy: src=result.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli/result.php
+# - copy: src=mysqli.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli.php
+# - copy: src=result.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli/result.php
+- copy: src=classes dest=/var/www/comeandhireme/modules/database
 
 - lineinfile:
     dest: /var/www/comeandhireme/index.php
-    regexp: ^error_reporting(E_ALL
-    line: "error_reporting(E_ALL ^ E_DEPRECATED);"
+    regexp: "^error_reporting"
+    line: "error_reporting(E_ERROR);"
+
+- lineinfile:
+    dest: /etc/php5/apache2/php.ini
+    regexp: "^short_open_tag = Off"
+    line: "short_open_tag = On"
+
+- copy: src=001-chm.conf dest=/etc/apache2/sites-available/001-chm.conf
+  notify: restart apache
+

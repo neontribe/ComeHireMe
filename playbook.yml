@@ -49,14 +49,14 @@
         private: true
         when: ldap.pass is not defined
   roles:
-      # - init
-      # - bashrc
-      # - ntpd
-      # - firewall
-      # - ssh
-      # - shelltools
-      # - ldapclient
+      - init
+      - bashrc
+      - ntpd
+      - firewall
+      - ssh
+      - shelltools
+      - ldapclient
       - mysql
       - apache
-      # - php5
+      - php5
       - chm
