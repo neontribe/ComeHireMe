@@ -27,3 +27,8 @@
 - copy: src=database.php dest=/var/www/comeandhireme/modules/database/config/database.php
 - copy: src=mysqli.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli.php
 - copy: src=result.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli/result.php
+
+- lineinfile:
+    dest: /var/www/comeandhireme/index.php
+    regexp: ^error_reporting(E_ALL
+    line: "error_reporting(E_ALL ^ E_DEPRECATED);"
