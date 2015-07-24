@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
             hostname: name,
             servername: name
         }
-        # ansible.verbose = 'vvvv'
+        ansible.verbose = 'vvvv'
     end
     config.vm.synced_folder "./", "/vagrant", type: "nfs", disabled: true
 end

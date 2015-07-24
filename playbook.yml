@@ -10,9 +10,9 @@
       doc_root: /var/www/html
       mysql:
         root_password: rootpass
-        database: dbname
-        user: dbuser
-        password: dbpass
+        database: chm01
+        user: chm01
+        password: chm01
       php_ppa: php5-5.6
       ldap:
         server: 192.168.21.250
@@ -49,13 +49,14 @@
         private: true
         when: ldap.pass is not defined
   roles:
-      - init
-      - bashrc
-      - ntpd
-      - firewall
-      - ssh
-      - shelltools
-      - ldapclient
+      # - init
+      # - bashrc
+      # - ntpd
+      # - firewall
+      # - ssh
+      # - shelltools
+      # - ldapclient
       - mysql
       - apache
-      - php5
+      # - php5
+      - chm

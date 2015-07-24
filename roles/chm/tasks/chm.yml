@@ -1,0 +1,29 @@
+---
+# Will work in ansible v2.0 +
+# - unarchive: src=http://192.168.21.237/comehireme/chm.tgz dest=/var/www
+
+- get_url: url=http://192.168.21.237/comehireme/chm.tgz dest=/var/tmp/chm.tgz
+
+- unarchive: src=/var/tmp/chm.tgz dest=/var/www copy=no
+
+- name: Install DB
+  mysql_db:
+    state: import
+    name: "{{ mysql.database }}"
+    login_user: root
+    login_password: "{{ mysql.root_password }}"
+    target: /var/www/dump.sql
+
+- copy: src=001-chm.conf dest=/etc/apache2/sites-available/001-chm.conf
+
+- file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
+
+- file: src=/etc/apache2/sites-available/001-chm.conf dest=/etc/apache2/sites-enabled/001-chm.conf state=link
+  notify: restart apache
+
+- file: path='/var/www/comeandhireme/application/cache' state=directory recurse=yes mode=777
+- file: path='/var/www/comeandhireme/application/logs' state=directory recurse=yes mode=777
+
+- copy: src=database.php dest=/var/www/comeandhireme/modules/database/config/database.php
+- copy: src=mysqli.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli.php
+- copy: src=result.php dest=/var/www/comeandhireme/modules/database/classes/kohana/database/mysqli/result.php

@@ -1,0 +1,6 @@
+---
+- stat: path=comeandhireme
+  register: comeandhireme
+
+- include: chm.yml
+# when: not comeandhireme.stat.exists
